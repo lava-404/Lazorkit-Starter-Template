@@ -1,29 +1,20 @@
-# lazorkit-starter
+# LazorKit Starter – Passkey Smart Wallet Demos
 
-This is a Next.js app containing:
+This project demonstrates how to build passkey-native smart wallets
+and gasless transactions on Solana using LazorKit.
 
-- Tailwind and Shadcn UI for styling
-- [Gill](https://gill.site/) Solana SDK
-- Shadcn [Wallet UI](https://registry.wallet-ui.dev) components
+## ✨ Features
+- Passkey-based wallet authentication
+- Gasless SOL transfers (paymaster sponsored)
+- Session persistence across devices
+- On-chain notes demo
 
-## Getting Started
+## 📘 Tutorials
+- [How to create a passkey-based wallet](./tutorials/01-passkey-wallet.md)
+- [How to trigger a gasless transaction](./tutorials/02-gasless-transaction.md)
+- [How session persistence works](./tutorials/03-session-persistence.md)
 
-### Installation
-
-#### Create an app using this template
-
-```shell
-npx create-solana-dapp@latest -t gh:solana-foundation/templates/gill/lazorkit-starter
-```
-
-#### Install Dependencies
-
-```shell
-npm install
-```
-
-#### Start the app
-
-```shell
-npm run dev
-```
+## 🚀 Quick Start
+```bash
+pnpm install
+pnpm dev
