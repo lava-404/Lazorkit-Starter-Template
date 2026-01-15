@@ -1,209 +1,237 @@
-Gasless Swap with LazorKit (SOL → USDC)
+# Gasless Swap with LazorKit
 
-This tutorial explains how to build a gasless token swap flow on Solana using LazorKit smart wallets.
+A Next.js implementation demonstrating **gasless token swaps** on Solana using [LazorKit's wallet infrastructure](https://lazorkit.com). This example shows how to build a user-friendly swap interface where users can exchange SOL for USDC without paying gas fees.
 
-Users can:
+## ✨ Features
 
-Authenticate with passkeys
+- 🔗 **LazorKit Wallet Integration** - Seamless smart wallet connection
+- ⛽ **Gasless Transactions** - Users swap without holding SOL for gas
+- 💱 **Real-time Price Quotes** - Live exchange rates via Jupiter API
+- 🔄 **Atomic Swaps** - Secure SOL → USDC exchanges
+- 📊 **Balance Tracking** - Real-time SOL and USDC balance updates
+- 🌐 **Network Aware** - Configurable for mainnet/devnet
 
-Sign transactions without holding SOL for fees
+## 🚀 Quick Start
 
-Swap SOL → USDC with paymaster-sponsored gas
+### Prerequisites
 
-This demo uses LazorKit for wallet management and transaction signing, while delegating price discovery and settlement to a backend.
+```bash
+npm install @lazorkit/wallet @solana/web3.js
+```
 
-What you’ll build
+### Environment Variables
 
-A gasless swap UI where:
+```env
+NEXT_PUBLIC_USDC_POOL_WALLET=your_pool_wallet_address
+```
 
-Users input a SOL amount
+## 📖 LazorKit Integration Guide
 
-A price quote is fetched
+### 1. Wallet Connection
 
-The user signs one gasless transaction
+Use LazorKit's `useWallet` hook to access the user's smart wallet:
 
-USDC is delivered after confirmation
-
-Prerequisites
-
-LazorKit configured in your app
-
-A deployed USDC pool wallet (backend-controlled)
-
-Backend endpoints:
-
-/api/swap → returns SOL/USDC price
-
-/api/swap/complete → sends USDC to user
-
-Step 1: Access the LazorKit smart wallet
-
-LazorKit exposes the user’s smart wallet public key and connection state.
-
+```typescript
 import { useWallet } from '@lazorkit/wallet'
 
 const { smartWalletPubkey, isConnected } = useWallet()
+```
 
+**Key Features:**
+- `smartWalletPubkey` - User's smart wallet public key
+- `isConnected` - Connection state tracking
 
-This wallet:
+### 2. Transaction Signing
 
-Is passkey-authenticated
+Implement gasless transactions using LazorKit's transaction signing:
 
-Requires no seed phrase
-
-Can sign transactions without SOL
-
-Step 2: Use LazorKit’s gasless transaction wrapper
-
-Instead of using sendTransaction directly, LazorKit provides a safe wrapper that:
-
-Sponsors fees via a paymaster
-
-Handles retries and blockhash refresh
-
-Works with passkey signatures
-
+```typescript
 import { useSafeWallet } from '@/hooks/useSafeWallet'
+import { SystemProgram } from '@solana/web3.js'
 
 const { signAndSendTransaction } = useSafeWallet()
 
-
-This is the key enabler of gasless UX.
-
-Step 3: Fetch a swap quote (off-chain)
-
-Price discovery is handled off-chain (e.g. Jupiter, custom oracle).
-
-const res = await fetch('/api/swap')
-const data = await res.json()
-
-setQuote({
-  rate: data.solPrice,
-  usdcAmount: sol * data.solPrice,
-})
-
-
-Why off-chain?
-
-Faster UX
-
-No unnecessary on-chain compute
-
-Cleaner separation of concerns
-
-Step 4: Build the SOL transfer instruction
-
-The only on-chain instruction the user signs is a SOL transfer
-from their smart wallet → your USDC pool wallet.
-
-import { SystemProgram } from '@solana/web3.js'
-
+// Create transfer instruction
 const ix = SystemProgram.transfer({
   fromPubkey: smartWalletPubkey,
   toPubkey: poolWallet,
-  lamports,
+  lamports: Math.floor(parseFloat(solAmount) * 1_000_000_000),
 })
 
-
-This keeps signing minimal and secure.
-
-Step 5: Sign & send gaslessly with LazorKit
-
-This is where LazorKit shines ✨
-
+// Sign and send without gas fees
 const signature = await signAndSendTransaction({
   instructions: [ix],
 })
+```
 
+### 3. Network Configuration
 
-What happens under the hood:
+Configure token addresses for different networks:
 
-LazorKit injects a fresh blockhash
+```typescript
+import { getNetworkTokens, CURRENT_NETWORK } from '@/config/lazorkit'
 
-Paymaster covers gas fees
+const tokens = getNetworkTokens()
 
-User signs via passkey
+export const USDC_CONFIG = {
+  symbol: tokens.USDC.symbol,
+  mintAddress: tokens.USDC.mint,
+  decimals: tokens.USDC.decimals,
+  poolWallet: process.env.NEXT_PUBLIC_USDC_POOL_WALLET || '',
+}
+```
 
-Transaction is retried if needed
+### 4. Balance Monitoring
 
-User never pays gas.
+Track user balances with LazorKit-compatible hooks:
 
-Step 6: Complete the swap (backend)
+```typescript
+const { solBalance, usdcBalance, isLoading, refresh } = useWalletBalance(address)
 
-Once the SOL transfer is confirmed, the backend:
+// Refresh after transactions
+await refresh()
+```
 
-Verifies the SOL transaction
+### 5. Transaction Explorer Links
 
-Sends USDC → user wallet
+Generate network-aware explorer URLs:
 
-await fetch('/api/swap/complete', {
-  method: 'POST',
-  body: JSON.stringify({
-    userWallet: smartWalletPubkey.toString(),
-    solAmount,
-    solTxSignature: signature,
-  }),
-})
-
-
-This keeps:
-
-Liquidity custody server-side
-
-Client logic simple
-
-Attack surface minimal
-
-Step 7: Show the transaction
-
-Use LazorKit helpers to link users to the explorer.
-
+```typescript
 import { txExplorerUrl } from '@/config/lazorkit'
 
-<a href={txExplorerUrl(txSig)} target="_blank">
+<a href={txExplorerUrl(signature)} target="_blank">
   View transaction
 </a>
+```
 
-Why LazorKit matters here
+## 🔧 Core Implementation
 
-Without LazorKit, this flow would require:
+### Complete Swap Flow
 
-Browser wallet extensions
+```typescript
+const handleSwap = async () => {
+  if (!smartWalletPubkey || !quote || !isConnected) return
 
-Users holding SOL
+  try {
+    setTxState('swapping')
+    
+    const poolWallet = new PublicKey(USDC_CONFIG.poolWallet)
+    const lamports = Math.floor(parseFloat(solAmount) * 1_000_000_000)
 
-Manual fee management
+    // 1️⃣ User sends SOL → pool (gasless via LazorKit)
+    const ix = SystemProgram.transfer({
+      fromPubkey: smartWalletPubkey,
+      toPubkey: poolWallet,
+      lamports,
+    })
 
-Worse mobile UX
+    setTxState('confirming')
 
-With LazorKit:
+    const signature = await signAndSendTransaction({
+      instructions: [ix],
+    })
 
-✅ Passkey authentication
+    // 2️⃣ Backend sends USDC → user
+    const res = await fetch('/api/swap/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userWallet: smartWalletPubkey.toString(),
+        solAmount: parseFloat(solAmount),
+        solTxSignature: signature,
+      }),
+    })
 
-✅ Gasless signing
+    const data = await res.json()
+    setTxSig(data.signature || signature)
+    setTxState('success')
+    
+    await refresh() // Update balances
+  } catch (err) {
+    setTxState('error')
+    setError(err instanceof Error ? err.message : 'Swap failed')
+  }
+}
+```
 
-✅ Mobile-first UX
+### Real-time Price Quotes
 
-✅ Clean retry & simulation handling
+```typescript
+const fetchQuote = useCallback(async (amount: string) => {
+  if (!amount || parseFloat(amount) <= 0) {
+    setQuote(null)
+    return
+  }
 
-Summary
+  try {
+    setTxState('quoting')
+    const res = await fetch('/api/swap')
+    const data = await res.json()
 
-You built a real-world gasless swap by combining:
+    const sol = parseFloat(amount)
+    setQuote({
+      rate: data.solPrice,
+      usdcAmount: sol * data.solPrice,
+    })
 
-LazorKit smart wallets
+    setTxState('idle')
+  } catch (e) {
+    setError('Failed to fetch price')
+  }
+}, [])
 
-Paymaster-sponsored transactions
+// Debounced quote fetching
+useEffect(() => {
+  const t = setTimeout(() => fetchQuote(solAmount), 500)
+  return () => clearTimeout(t)
+}, [solAmount, fetchQuote])
+```
 
-Minimal on-chain instructions
+## 🎯 Transaction States
 
-Backend settlement logic
+The component handles multiple transaction states for smooth UX:
 
-This pattern scales to:
+| State | Description |
+|-------|-------------|
+| `idle` | Ready for swap |
+| `quoting` | Fetching live prices |
+| `swapping` | User signing transaction |
+| `confirming` | Transaction confirming on-chain |
+| `success` | Swap completed |
+| `error` | Error occurred |
 
-Subscriptions
+## 🔒 Security Features
 
-In-app purchases
+- ✅ Balance validation before transactions
+- ✅ Error handling for failed swaps
+- ✅ Smart wallet verification via LazorKit
+- ✅ Secure transaction signing
 
-DeFi onboarding
+## 📦 Dependencies
 
-Web2-style crypto UX
+```json
+{
+  "@lazorkit/wallet": "latest",
+  "@solana/web3.js": "^1.x.x",
+  "lucide-react": "latest",
+  "next": "14.x.x",
+  "react": "^18.x.x"
+}
+```
+
+## 🌐 Network Support
+
+Works seamlessly across Solana networks:
+- ✅ Mainnet Beta
+- ✅ Devnet
+- ✅ Testnet
+
+Configure via `CURRENT_NETWORK` in your LazorKit config.
+
+## 📝 License
+
+MIT
+
+---
+
+**Built with [LazorKit](https://lazorkit.com)** - The easiest way to build gasless Solana dApps
