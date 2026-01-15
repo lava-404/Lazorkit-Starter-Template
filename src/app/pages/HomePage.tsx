@@ -42,7 +42,7 @@ const FEATURES = {
   },
   subscription: {
     title: 'USDC Subscriptions',
-    subtitle: 'Approve a USDC allowance once and let payments happen automatically. No repeated signing, no manual payments — just seamless recurring billing.',
+    subtitle: 'Approve a USDC allowance once and let payments happen automatically. No repeated signing, no manual payments, just seamless recurring billing.',
     howItWorks: [
       'You approve a USDC allowance for the service.',
       'No payment is made immediately.',
