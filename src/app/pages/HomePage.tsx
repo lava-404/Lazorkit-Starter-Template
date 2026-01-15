@@ -31,7 +31,7 @@ type FeatureKey = 'swap' | 'subscription' | 'transfers'
 const FEATURES = {
   transfers: {
     title: 'Gasless Transfers',
-    subtitle: 'Send SOL instantly without holding any SOL for fees...',
+    subtitle: 'Send SOL instantly without holding any SOL for fees. Your smart wallet signs, the paymaster sponsors the gas, and the transaction just… works.',
     howItWorks: [
       'You initiate a SOL transfer from your smart wallet.',
       'The transaction is signed using passkey authentication.',
@@ -42,7 +42,7 @@ const FEATURES = {
   },
   subscription: {
     title: 'USDC Subscriptions',
-    subtitle: 'Approve a USDC allowance once...',
+    subtitle: 'Approve a USDC allowance once and let payments happen automatically. No repeated signing, no manual payments — just seamless recurring billing.',
     howItWorks: [
       'You approve a USDC allowance for the service.',
       'No payment is made immediately.',
@@ -53,7 +53,7 @@ const FEATURES = {
   },
   swap: {
     title: 'Gasless Swap',
-    subtitle: 'Swap SOL to USDC at live market prices...',
+    subtitle: 'Swap SOL to USDC at live market prices without worrying about gas. You send SOL, the backend settles the swap, and fees are handled automatically.',
     howItWorks: [
       'You enter the amount of SOL to swap.',
       'Live SOL/USDC price is fetched.',
@@ -125,46 +125,47 @@ export default function HomePage() {
         className="border-t border-gray-200"
       >
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 scroll-mt-32">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-            
-            {/* Left column */}
+
+          {/* 🔹 TOP ROW: Title + Subtitle (full width always) */}
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              {feature.title}
+            </h2>
+
+            <p className="text-sm sm:text-base text-gray-600">
+              {feature.subtitle}
+            </p>
+          </div>
+
+          {/* 🔹 BOTTOM ROW: Content */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+
+            {/* LEFT COLUMN */}
             <div className="flex flex-col">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
-                {feature.title}
-              </h2>
-  
-              <p className="text-sm sm:text-base text-gray-600 max-w-xl mb-6 sm:mb-8">
-                {feature.subtitle}
-              </p>
-  
               {/* Wallet balance */}
               <div className="mb-6 sm:mb-10">
                 <BalanceCard />
               </div>
 
-              {/* How it works box */}
-              {/* How it works box */}
-{/* How it works box */}
-<div className="mb-6 sm:mb-8">
-  <div className="rounded-xl border border-[#7857FF]/15 bg-[#7857FF]/5 p-5">
-    <h3 className="text-sm font-semibold text-gray-900 mb-3">
-      How it works
-    </h3>
+              {/* How it works */}
+              <div className="mb-6 sm:mb-8">
+                <div className="rounded-xl border border-[#7857FF]/15 bg-[#7857FF]/5 p-5">
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">
+                    How it works
+                  </h3>
 
-    <ul className="space-y-2 text-sm text-gray-600">
-      {feature.howItWorks.map((step, idx) => (
-        <li key={idx} className="flex gap-2">
-          <span className="text-[#7857FF] font-medium">
-            {idx + 1}.
-          </span>
-          <span>{step}</span>
-        </li>
-      ))}
-    </ul>
-  </div>
-</div>
-
-
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    {feature.howItWorks.map((step, idx) => (
+                      <li key={idx} className="flex gap-2">
+                        <span className="text-[#7857FF] font-medium">
+                          {idx + 1}.
+                        </span>
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
 
               {/* Feature tabs */}
               <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -185,16 +186,17 @@ export default function HomePage() {
                 />
               </div>
             </div>
-  
-            {/* Right column (demo) */}
+
+            {/* RIGHT COLUMN */}
             <div className="w-full flex justify-center lg:justify-end">
               <div className="w-full max-w-md lg:max-w-none">
                 {feature.demo}
               </div>
             </div>
-  
+
           </div>
-        </section>
+          </section>
+
       </div>
     </div>
   )
