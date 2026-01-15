@@ -31,23 +31,39 @@ type FeatureKey = 'swap' | 'subscription' | 'transfers'
 const FEATURES = {
   transfers: {
     title: 'Gasless Transfers',
-    subtitle: 'Swap tokens without holding SOL. Fees are sponsored via smart wallets.',
-    cta: 'Explore gasless swaps',
+    subtitle: 'Send SOL instantly without holding any SOL for fees...',
+    howItWorks: [
+      'You initiate a SOL transfer from your smart wallet.',
+      'The transaction is signed using passkey authentication.',
+      'Lazorkit’s paymaster sponsors the gas fee.',
+      'The transaction is submitted and finalized on-chain.',
+    ],
     demo: <GaslessTransfer />,
   },
   subscription: {
     title: 'USDC Subscriptions',
-    subtitle: 'Automated recurring USDC billing powered by smart wallet authorization.',
-    cta: 'View subscription flow',
-    demo: <SubscriptionComponent/>
+    subtitle: 'Approve a USDC allowance once...',
+    howItWorks: [
+      'You approve a USDC allowance for the service.',
+      'No payment is made immediately.',
+      'The service can charge against the allowance later.',
+      'No repeated signatures are required.',
+    ],
+    demo: <SubscriptionComponent />,
   },
   swap: {
     title: 'Gasless Swap',
-    subtitle: 'A passkey-authenticated notes app demonstrating gasless signing.',
-    cta: 'Explore notes app',
-    demo: <GaslessSwap />
+    subtitle: 'Swap SOL to USDC at live market prices...',
+    howItWorks: [
+      'You enter the amount of SOL to swap.',
+      'Live SOL/USDC price is fetched.',
+      'You send SOL to the pool wallet.',
+      'Backend sends USDC back to your smart wallet.',
+    ],
+    demo: <GaslessSwap />,
   },
 }
+
 
 /**
  * Home page component displaying feature demos
@@ -125,7 +141,31 @@ export default function HomePage() {
               <div className="mb-6 sm:mb-10">
                 <BalanceCard />
               </div>
-  
+
+              {/* How it works box */}
+              {/* How it works box */}
+{/* How it works box */}
+<div className="mb-6 sm:mb-8">
+  <div className="rounded-xl border border-[#7857FF]/15 bg-[#7857FF]/5 p-5">
+    <h3 className="text-sm font-semibold text-gray-900 mb-3">
+      How it works
+    </h3>
+
+    <ul className="space-y-2 text-sm text-gray-600">
+      {feature.howItWorks.map((step, idx) => (
+        <li key={idx} className="flex gap-2">
+          <span className="text-[#7857FF] font-medium">
+            {idx + 1}.
+          </span>
+          <span>{step}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+
+
               {/* Feature tabs */}
               <div className="flex flex-wrap gap-2 sm:gap-3">
                 <FeatureTab

@@ -193,20 +193,6 @@ const GaslessTransfer = () => {
             </p>
           </div>
 
-          {/* Info Box */}
-          <div className={`p-4 rounded-lg border-l-4 border-purple-500 `}>
-            <div className="flex items-start gap-3">
-              <ArrowRight className="w-5 h-5 text-purple-500 mt-0.5" />
-              <div>
-                <p className={`text-sm font-semibold mb-1 `}>
-                  Zero Gas Fees
-                </p>
-                <p className={`text-xs`}>
-                  This transfer is completely free - no transaction fees required
-                </p>
-              </div>
-            </div>
-          </div>
 
           {/* Transfer Button */}
           <button

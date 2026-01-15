@@ -143,7 +143,7 @@ export default function GaslessSwap() {
   // ───────── UI (yours, untouched) ─────────
   return (
     <div className="flex items-center justify-center">
-      <div className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden pb-6">
         {/* HEADER */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-6">
           <div className="flex items-center gap-3 mb-2">
@@ -221,7 +221,11 @@ export default function GaslessSwap() {
             </a>
           )}
         </div>
+        <p className={`text-center text-xs`}>
+          Transfers are processed instantly on Devnet
+        </p>
       </div>
+      
     </div>
   )
 }

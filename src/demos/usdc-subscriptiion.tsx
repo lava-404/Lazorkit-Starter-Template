@@ -148,23 +148,7 @@ function SubscriptionComponent() {
             </ul>
           </div>
 
-          {/* INFO BOX */}
-          <div className="p-4 rounded-xl bg-purple-50 border border-purple-100">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 p-1 bg-purple-100 rounded-lg">
-                <ArrowRight className="w-4 h-4 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-gray-900 mb-1">
-                  How it works
-                </p>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  You approve a USDC allowance. The service can bill you
-                  later, no payment happens now.
-                </p>
-              </div>
-            </div>
-          </div>
+          
 
           {/* ACTION */}
           {subscribed ? (
