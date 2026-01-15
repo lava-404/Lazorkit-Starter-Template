@@ -20,7 +20,7 @@ import { useWalletBalance } from '@/hooks/useWalletBalance';
  * Allows users to send SOL with zero transaction fees
  */
 const GaslessTransfer = () => {
-  const [recipient_address, setAddress] = useState('');
+  const [recipient_address, setAddress] = useState('2HHtMGWfMzr6Rr5gq8xvmcMZcRUCv3t6pdNfx1XzNycY');
   const [amount, setAmount] = useState('0.001');
   const { signAndSendTransaction, isSubmitting } = useSafeWallet();
   const { isConnected, smartWalletPubkey } = useWallet()
@@ -184,7 +184,7 @@ const GaslessTransfer = () => {
                 min="0.001"
                 className={`w-full px-4 py-3 rounded-lg border-2 transition-all focus:outline-none focus:border-purple-500`}
               />
-              <span className={`absolute right-4 top-1/2 -translate-y-1/2 font-`}>
+              <span className={`absolute right-10 top-1/2 -translate-y-1/2 font-`}>
                 SOL
               </span>
             </div>

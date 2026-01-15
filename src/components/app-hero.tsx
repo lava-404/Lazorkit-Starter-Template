@@ -48,12 +48,16 @@ export default function Hero() {
 
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-            <button className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#7857FF] text-white font-medium hover:bg-[#6b4df5] transition">
+            <button className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#7857FF] text-white font-medium hover:bg-[#6b4df5] transition" onClick={(e) => {
+                window.open('https://github.com/lava-404/Lazorkit-Starter-Template/blob/main/README.md')
+              }}>
               Explore Docs
               <ArrowRight className="w-4 h-4" />
             </button>
 
-            <button className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50 transition">
+            <button className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50 transition" onClick={(e) => {
+                window.open('https://github.com/lava-404/Lazorkit-Starter-Template')
+              }}>
               <Github className="w-4 h-4" />
               View on GitHub
             </button>
@@ -78,14 +82,22 @@ export default function Hero() {
                   <span className="text-green-400">➜</span>
                   <span className="text-blue-400">~</span>
                   <span className="text-gray-300">
-                    git clone https://github.com/lazorkit/starter-template
+                    git clone{' '}
+                    <a
+                      href="https://github.com/lava-404/Lazorkit-Starter-Template"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-purple-400 hover:underline"
+                    >
+                      https://github.com/lazorkit/starter-template
+                    </a>
                   </span>
                 </div>
                 <div className="flex items-start gap-2 break-all">
                   <span className="text-green-400">➜</span>
                   <span className="text-blue-400">~</span>
                   <span className="text-gray-300">
-                    npm install && npm run dev
+                    pnpm install && pnpm run dev
                   </span>
                   <span className="animate-pulse text-gray-400">_</span>
                 </div>

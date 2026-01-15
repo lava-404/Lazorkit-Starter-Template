@@ -91,14 +91,7 @@ export default function TemplateFeatures() {
             <div
               className="flex items-center gap-1 text-sm font-medium text-[#7857FF] cursor-pointer hover:underline"
               onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-
-                window.dispatchEvent(
-                  new CustomEvent('select-demo', {
-                    detail: { feature: 'notes', scroll: true },
-                  })
-                )
+                window.open('https://recall-gray.vercel.app/')
               }}
             >
               Explore example dApp
@@ -161,7 +154,9 @@ export default function TemplateFeatures() {
               session control, and upgradeable logic.
             </p>
 
-            <div className="flex items-center gap-1 text-sm font-medium text-[#7857FF] hover:underline cursor-pointer">
+            <div className="flex items-center gap-1 text-sm font-medium text-[#7857FF] hover:underline cursor-pointer" onClick={(e) => {
+                window.open('https://lazorkit.com/')
+              }}>
               Learn more
               <ArrowRight className="w-4 h-4" />
             </div>

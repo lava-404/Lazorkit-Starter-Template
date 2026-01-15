@@ -53,19 +53,19 @@ export type NavLink = {
 const links: NavLink[] = [
   {
     label: 'Documentation',
-    href: 'https://docs.lazor.sh',
+    href: 'https://github.com/lava-404/Lazorkit-Starter-Template/blob/main/README.md',
     external: true,
     icon: 'docs',
   },
   {
     label: 'GitHub',
-    href: 'https://github.com',
+    href: 'https://github.com/lava-404/Lazorkit-Starter-Template',
     external: true,
     icon: 'github',
   },
   {
     label: 'Example dApp',
-    href: '/',
+    href: 'https://recall-gray.vercel.app/',
     icon: 'example',
   },
   {
