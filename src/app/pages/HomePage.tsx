@@ -16,6 +16,7 @@ import BalanceCard from '@/components/app-balance-ui-card'
 import SubscriptionComponent from '@/demos/usdc-subscriptiion'
 import GaslessSwap from '@/demos/gasless-swap'
 import { useEffect } from 'react'
+import AppConnectWalletPrompt from '@/components/app-connect-wallet-prompt'
 
 
 /**
@@ -96,7 +97,7 @@ export default function HomePage() {
    * All demos require an active wallet connection
    */
   if (!isConnected || !wallet) {
-    return <div>Please connect your wallet</div>
+    return <AppConnectWalletPrompt />
   }
 
   

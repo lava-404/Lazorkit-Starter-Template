@@ -7,7 +7,7 @@
 
 'use client'
 
-import { ReactQueryProvider } from '@/components/react-query-provider'
+import { ReactQueryProvider } from '@/components/app-react-query-provider'
 import React from 'react'
 
 /**

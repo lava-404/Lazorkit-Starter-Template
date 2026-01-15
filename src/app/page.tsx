@@ -8,7 +8,7 @@
 
 'use client'
 import AppHero from '@/components/app-hero';
-import TemplateFeatures from '@/components/template-features';
+import TemplateFeatures from '@/components/app-template-features';
 import HomePage from './pages/HomePage';
 import { LazorkitProvider } from '@lazorkit/wallet'
 
