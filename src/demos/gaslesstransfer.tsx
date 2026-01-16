@@ -115,6 +115,8 @@ const GaslessTransfer = () => {
         toPubkey: destinationPubkey,
         lamports,
       });
+      console.log('Instruction count:', [instruction].length)
+
   
       /**
        * Submit transaction via gasless wrapper
@@ -123,6 +125,9 @@ const GaslessTransfer = () => {
        */
       const signature = await signAndSendTransaction({
         instructions: [instruction],
+        transactionOptions: {
+          computeUnitLimit: 100_000,
+        }
       });
   
       alert(`Transfer successful!\nTx: ${signature}`);

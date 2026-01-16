@@ -105,12 +105,12 @@ export default function GaslessSwap() {
         lamports,
       })
 
-      setTxState('confirming')
+      
 
       const signature = await signAndSendTransaction({
         instructions: [ix],
       })
-
+      setTxState('confirming')
       // 2️⃣ Backend sends USDC → user
       const res = await fetch('/api/swap/complete', {
         method: 'POST',
@@ -123,6 +123,7 @@ export default function GaslessSwap() {
       })
 
       const data = await res.json()
+      
       if (!res.ok || data.error) throw new Error(data.error || 'Swap failed')
 
       setTxSig(data.signature || signature)
